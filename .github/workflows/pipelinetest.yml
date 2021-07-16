@@ -1,0 +1,10 @@
+name: pipelinetest
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: user-step
+        run: echo ${{ github.event.schedule.user.login }}
