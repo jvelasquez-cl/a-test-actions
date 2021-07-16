@@ -2,11 +2,12 @@ name: pipelinetest
 on: push
 
 env:
-  USERNAME: ${{ github.event.push.user.login }}
+  COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+  USERNAME: ${{ github.actor }}
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - name: user-step
-        run: echo "${{ github.event.push.user.login }}"
+        run: echo "${{ github.actor }}"
