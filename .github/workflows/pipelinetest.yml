@@ -13,7 +13,7 @@ jobs:
         run: echo "${{ github.actor }}"
   deploy:
     runs-on: ubuntu-latest
-    if: !contains($COMMIT_MESSAGE , 'skip-deploy')
+    if: ! contains($COMMIT_MESSAGE , 'skip-deploy')
     needs:
       - test
     steps:
