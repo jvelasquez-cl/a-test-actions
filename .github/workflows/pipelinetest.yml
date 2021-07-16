@@ -12,8 +12,8 @@ jobs:
       - name: user-step
         run: echo "${{ github.actor }}"
   deploy:
+    if: !(contains(env.COMMIT_MESSAGE , 'skip-deploy'))
     runs-on: ubuntu-latest
-    if: "!contains(env.COMMIT_MESSAGE , 'skip-deploy')"
     needs:
       - test
     steps:
