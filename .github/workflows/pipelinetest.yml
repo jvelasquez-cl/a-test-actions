@@ -11,3 +11,11 @@ jobs:
     steps:
       - name: user-step
         run: echo "${{ github.actor }}"
+  deploy:
+    if: !contains($COMMIT_MESSAGE , 'skip-deploy')
+    runs-on: ubuntu-latest
+    needs:
+      - test
+    steps:
+      - name: Schedule deployment
+        run: echo "Runing deployment"
