@@ -3,6 +3,7 @@ on: push
 
 env:
   USERNAME: ${{ github.actor }}
+  BRANCH_NAME: ${{ github.head_ref }
 
 jobs:
   test:
@@ -10,6 +11,8 @@ jobs:
     steps:
       - name: user-step
         run: echo "${{ github.actor }}"
+      - name: branch-step
+        run: echo "${{ github.head_ref }}"
   deploy:
     if: contains(github.event.head_commit.message, 'skip-deploy') != true
     runs-on: ubuntu-latest
