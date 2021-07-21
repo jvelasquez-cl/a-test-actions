@@ -12,10 +12,11 @@ jobs:
       environment: ${{ steps.set-env.outputs.environment }}
     steps:
       - name: set-env
-        run: |
-          if [[ "${{github.base_ref}}" == "master" || "${{github.ref}}" == "refs/heads/master" ]]; then
-            echo "::set-output name=environment::production"
-          fi
+        # run: |
+        #   if [[ "${{github.base_ref}}" == "master" || "${{github.ref}}" == "refs/heads/master" ]]; then
+        #     echo "::set-output name=environment::production"
+        #   fi
+        run: echo "::set-output name=environment::production"
 
   test:
     runs-on: ubuntu-latest
