@@ -11,7 +11,8 @@ jobs:
     outputs:
       environment: ${{ steps.set-env.outputs.environment }}
     steps:
-      - name: set-env
+      - name: Set env
+        id: set-env
         # run: |
         #   if [[ "${{github.base_ref}}" == "master" || "${{github.ref}}" == "refs/heads/master" ]]; then
         #     echo "::set-output name=environment::production"
