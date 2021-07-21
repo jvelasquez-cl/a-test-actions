@@ -29,13 +29,13 @@ jobs:
       - name: branch-step
         run: echo "${{ github.ref }}"
     env:
-      ENVIRONMENT: ${{needs.set-variables.outputs.environment}}
-  deploy:
-    if: contains(github.event.head_commit.message, 'skip-deploy') != true
-    runs-on: ubuntu-latest
-    needs:
-      - test
-      - set-env
-    steps:
-      - name: Schedule deployment
-        run: echo "Runing deployment"
+      ENVIRONMENT: ${{needs.set-env.outputs.environment}}
+  # deploy:
+  #   if: contains(github.event.head_commit.message, 'skip-deploy') != true
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - test
+  #     - set-env
+  #   steps:
+  #     - name: Schedule deployment
+  #       run: echo "Runing deployment"
