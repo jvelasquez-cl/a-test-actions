@@ -9,7 +9,7 @@ jobs:
   set-env:
     runs-on: ubuntu-latest
     outputs:
-      environment: ${{ steps.set-env.outputs.environment }}
+      environment: ${{ steps.set-variables.outputs.environment }}
     steps:
       - name: set-variables
         run: |
@@ -29,7 +29,7 @@ jobs:
       - name: branch-step
         run: echo "${{ github.ref }}"
     env:
-      ENVIRONMENT: ${{needs.set-env.outputs.environment}}
+      ENVIRONMENT: ${{needs.set-variables.outputs.environment}}
   deploy:
     if: contains(github.event.head_commit.message, 'skip-deploy') != true
     runs-on: ubuntu-latest
