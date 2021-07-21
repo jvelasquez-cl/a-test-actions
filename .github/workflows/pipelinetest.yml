@@ -6,13 +6,28 @@ env:
   BRANCH_NAME: ${{ github.ref }}
 
 jobs:
+  set-env:
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.set-env.outputs.environment }}
+    steps:
+      - name: set-variables
+        run: |
+          if [[ "${{github.base_ref}}" == "master" || "${{github.ref}}" == "refs/heads/master" ]]; then
+            echo "::set-output name=environment::production"
+          fi
+
   test:
     runs-on: ubuntu-latest
     steps:
+      - name: env-step
+        run: echo "${{ env.ENVIRONMENT }}"
       - name: user-step
         run: echo "${{ github.actor }}"
       - name: branch-step
         run: echo "${{ github.ref }}"
+    env:
+      ENVIRONMENT: ${steps.set-env.outputs.environment}
   deploy:
     if: contains(github.event.head_commit.message, 'skip-deploy') != true
     runs-on: ubuntu-latest
