@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       environment: ${{ steps.set-env.outputs.environment }}
+      deployment-api-url: ${{ steps.set-env.outputs.deployment-api-url }}
     steps:
       - name: Set env
         id: set-env
