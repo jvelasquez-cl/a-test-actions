@@ -16,7 +16,7 @@ jobs:
         run: |
           if [[ "${{github.base_ref}}" == "master" || "${{github.ref}}" == "refs/heads/master" ]]; then
             echo "::set-output name=environment::production"
-            echo "::set-output name=deployment-api-url::https://ansible.evercheck.com/run-command"
+            echo "::set-output name=deployment-api-url::https://cholongolongo.free.beeceptor.com"
           fi
 
           if [["${{github.ref}}" == "refs/heads/demo" ]]; then
@@ -34,13 +34,23 @@ jobs:
     needs:
       - set-variables
     steps:
-      - name: env-step
-        run: echo "${{ env.ENVIRONMENT }}"
-      - name: user-step
-        run: echo "${{ github.actor }}"
-      - name: branch-step
-        run: echo "${{ github.ref }}"
+      - name: test-request
+        run: |
+          API_RESPONSE=$(curl $flags $method $DEPLOYMENT_API --silent --header 'Content-Type: application/json' --data-raw '{ "service": "ecc-core-api", "command": "deploy", "location": "all", "username": "${{ env.USER_NAME }}" }')
+          IFS=';' read -ra my_array <<< "$API_RESPONSE"
+          API_RESPONSE_BODY="${my_array[0]}"
+          API_RESPONSE_HTTP_CODE="${my_array[1]}"
+          echo "::set-output name=response::$API_RESPONSE_BODY"
+          echo "::set-output name=status::$API_RESPONSE_HTTP_CODE"
+      # - name: env-step
+      #   run: echo "${{ env.ENVIRONMENT }}"
+      # - name: user-step
+      #   run: echo "${{ github.actor }}"
+      # - name: branch-step
+      #   run: echo "${{ github.ref }}"
     env:
+      method: POST
+      flags: -w ;%{http_code} --location --request
       ENVIRONMENT: ${{needs.set-variables.outputs.environment}}
       DEPLOYMENT_API: ${{needs.set-variables.outputs.deployment-api-url}}
   # deploy:
