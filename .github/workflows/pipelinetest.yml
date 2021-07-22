@@ -16,7 +16,7 @@ jobs:
         run: |
           if [[ "${{github.base_ref}}" == "master" || "${{github.ref}}" == "refs/heads/master" ]]; then
             echo "::set-output name=environment::production"
-            echo "::set-output name=deployment-api-url::https://cholongolongo.free.beeceptor.com"
+            echo "::set-output name=deployment-api-url::curl -v -X POST 'https://cholongolongo.free.beeceptor.com/my/api/path' -H 'Content-Type: application/json' -d '{"data":"Hello Beeceptor"}'"
           fi
 
           if [["${{github.ref}}" == "refs/heads/demo" ]]; then
