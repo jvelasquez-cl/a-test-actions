@@ -13,11 +13,21 @@ jobs:
     steps:
       - name: Set env
         id: set-env
-        # run: |
-        #   if [[ "${{github.base_ref}}" == "master" || "${{github.ref}}" == "refs/heads/master" ]]; then
-        #     echo "::set-output name=environment::production"
-        #   fi
-        run: echo "::set-output name=environment::production"
+        run: |
+          if [[ "${{github.base_ref}}" == "master" || "${{github.ref}}" == "refs/heads/master" ]]; then
+            echo "::set-output name=environment::production"
+            echo "::set-output name=deployment-api-url::https://ansible.evercheck.com/run-command"
+          fi
+
+          if [["${{github.ref}}" == "refs/heads/demo" ]]; then
+            echo "::set-output name=environment::demo"
+            echo "::set-output name=deployment-api-url::https://ansible.demo.evercheck.com/run-command"
+          fi
+
+          if [["${{github.ref}}" == "refs/heads/test" ]]; then
+            echo "::set-output name=environment::test"
+            echo "::set-output name=deployment-api-url::https://ansible.test.evercheck.com/run-command"
+          fi
 
   test:
     runs-on: ubuntu-latest
@@ -32,6 +42,7 @@ jobs:
         run: echo "${{ github.ref }}"
     env:
       ENVIRONMENT: ${{needs.set-variables.outputs.environment}}
+      DEPLOYMENT_API: ${{needs.set-variables.outputs.deployment-api-url}}
   # deploy:
   #   if: contains(github.event.head_commit.message, 'skip-deploy') != true
   #   runs-on: ubuntu-latest
